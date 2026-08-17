@@ -38,9 +38,21 @@ This gives you a **public site** (`index.html`) that shows only current/upcoming
 - **Sermons**: shows the most recent 9 sermons whose date has already passed (so a sermon "goes live" on its date and stays as an archive).
 - Everything starts **empty** — there are no sample/placeholder events or sermons. You and your leaders add your own from the dashboard.
 
-## What changed vs. your original file
-Everything — nav, hero, About, Giving, Contact, footer — is exactly as you had it. Only two sections became dynamic:
-- **Sermons**: previously 3 hardcoded cards, now pulled live from the `sermons` table.
-- **Events**: previously 4 hardcoded entries, now pulled live from the `events` table, filtered to today-and-later.
+## 6. Add PWA files (install-to-home-screen)
+Your site is now installable as an app on iPhone and Android, using your church logo as the icon.
 
-Both start empty until you add entries from `admin.html`.
+1. Add these new files/folders to the **same repo folder** as `index.html`:
+   - `manifest.json`
+   - `sw.js`
+   - `icons/` (the whole folder — contains all icon sizes)
+2. Push to GitHub. Your live URL is:
+   `https://kyeremehabass721-prog.github.io/Pure-Grace-Revival-Ministries-/`
+3. Open that link on a phone:
+   - **Android (Chrome)**: a banner appears automatically at the bottom with an **Install** button — tapping it triggers the native install prompt.
+   - **iPhone (Safari)**: a matching banner appears automatically; tapping **Install** opens a short instruction sheet ("Tap Share → Add to Home Screen → Add"), since iOS doesn't allow apps to trigger installs directly — Apple requires that manual step.
+4. Once installed, the app opens full-screen (no browser bar), with your church logo as the home screen icon.
+
+**Note:** the banner only shows over HTTPS (GitHub Pages already gives you this) and won't show again once dismissed or installed, on that device.
+
+## Note on the rest of the site
+Your existing About, Giving, and Contact sections (leadership, service times, location, giving verse) are untouched — only Sermons and Events were made dynamic.
