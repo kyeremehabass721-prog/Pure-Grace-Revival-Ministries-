@@ -1,40 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — Pure-Grace Revival Ministries</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
 <style>
-  :root { --royal:#0A2D6E; --mid:#1757C2; --sky:#3A8FFF; --light:#A8CAFF; --white:#fff; --gold:#FFCC44; --dark:#060F24; }
-  * { box-sizing: border-box; margin:0; padding:0; }
-  body { font-family:'Lato',sans-serif; background: var(--dark); color: var(--white); min-height:100vh; }
-  header { padding: 20px 5%; border-bottom: 1px solid rgba(58,143,255,0.2); display:flex; justify-content:space-between; align-items:center; }
-  header h1 { font-family:'Cinzel',serif; font-size:1rem; letter-spacing:0.05em; }
-  header button { background:transparent; border:1px solid rgba(168,202,255,0.4); color:var(--light); padding:8px 16px; cursor:pointer; font-family:'Lato',sans-serif; }
-  main { max-width: 900px; margin: 0 auto; padding: 40px 5%; }
-  #login-view { max-width: 380px; margin: 80px auto; text-align:center; }
-  #login-view h2 { font-family:'Cinzel',serif; margin-bottom: 24px; }
-  input, textarea, select { width:100%; background: rgba(23,87,194,0.08); border:1px solid rgba(58,143,255,0.25); color:var(--white); padding:12px 14px; font-size:0.9rem; margin-bottom: 12px; font-family:'Lato',sans-serif; }
-  textarea { resize: vertical; min-height: 70px; }
-  label { display:block; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color: var(--gold); margin-bottom:6px; }
-  button.primary { background: linear-gradient(135deg,var(--mid),var(--sky)); color:#fff; border:none; padding:12px 24px; font-family:'Cinzel',serif; font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; width:100%; }
-  .tabs { display:flex; gap:10px; margin-bottom: 30px; }
-  .tabs button { background: rgba(23,87,194,0.1); border:1px solid rgba(58,143,255,0.2); color:var(--light); padding:10px 20px; cursor:pointer; font-family:'Cinzel',serif; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; }
-  .tabs button.active { background: var(--mid); color:#fff; }
-  .panel { display:none; }
-  .panel.active { display:block; }
-  .card-form { background: rgba(23,87,194,0.08); border:1px solid rgba(58,143,255,0.2); padding: 24px; margin-bottom: 30px; }
-  .card-form h3 { font-family:'Cinzel',serif; font-size:0.9rem; margin-bottom: 16px; color: var(--gold); }
-  .list-item { display:flex; justify-content:space-between; align-items:center; background: rgba(23,87,194,0.06); border:1px solid rgba(58,143,255,0.12); padding: 14px 18px; margin-bottom: 10px; }
-  .list-item .info h4 { font-family:'Cinzel',serif; font-size:0.85rem; }
-  .list-item .info p { font-size:0.78rem; color: var(--light); margin-top:3px; }
-  .list-item .actions button { background:transparent; border:1px solid rgba(168,202,255,0.3); color:var(--light); padding:6px 12px; margin-left:8px; cursor:pointer; font-size:0.75rem; }
-  .list-item .actions button.danger { border-color: rgba(255,90,90,0.5); color:#ff8080; }
-  .error-msg { color:#ff8080; font-size:0.82rem; margin-bottom:10px; min-height: 18px; }
-  .past-note { font-size:0.75rem; color: rgba(168,202,255,0.5); margin-bottom: 16px; }
+:root {
+  --royal:#0A2D6E;
+  --mid:#1757C2;
+  --sky:#3A8FFF;
+  --light:#A8CAFF;
+  --white:#fff;
+  --gold:#FFCC44;
+  --dark:#060F24;
+}
+
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body {
+  font-family:'Lato',sans-serif;
+  background:var(--dark);
+  color:var(--white);
+  min-height:100vh;
+}
+
+header {
+  padding:20px 5%;
+  border-bottom:1px solid rgba(58,143,255,0.2);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header h1 {
+  font-family:'Cinzel',serif;
+  font-size:1rem;
+}
+
+header button {
+  background:transparent;
+  border:1px solid rgba(168,202,255,0.4);
+  color:var(--light);
+  padding:8px 16px;
+  cursor:pointer;
+}
+
+main {
+  max-width:900px;
+  margin:0 auto;
+  padding:40px 5%;
+}
+
+#login-view {
+  max-width:380px;
+  margin:80px auto;
+  text-align:center;
+  padding:20px;
+}
+
+#login-view h2 {
+  font-family:'Cinzel',serif;
+  margin-bottom:24px;
+}
+
+input,
+textarea,
+select {
+  width:100%;
+  background:rgba(23,87,194,0.08);
+  border:1px solid rgba(58,143,255,0.25);
+  color:var(--white);
+  padding:12px 14px;
+  font-size:.9rem;
+  margin-bottom:12px;
+  font-family:'Lato',sans-serif;
+}
+
+input:focus,
+textarea:focus {
+  outline:none;
+  border-color:var(--sky);
+}
+
+textarea {
+  resize:vertical;
+  min-height:70px;
+}
+
+label {
+  display:block;
+  font-size:.72rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:6px;
+  text-align:left;
+}
+
+button.primary {
+  background:linear-gradient(135deg,var(--mid),var(--sky));
+  color:#fff;
+  border:none;
+  padding:12px 24px;
+  font-family:'Cinzel',serif;
+  font-size:.75rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  cursor:pointer;
+  width:100%;
+}
+
+button.primary:disabled {
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.tabs {
+  display:flex;
+  gap:10px;
+  margin-bottom:30px;
+}
+
+.tabs button {
+  background:rgba(23,87,194,.1);
+  border:1px solid rgba(58,143,255,.2);
+  color:var(--light);
+  padding:10px 20px;
+  cursor:pointer;
+  font-family:'Cinzel',serif;
+  font-size:.72rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.tabs button.active {
+  background:var(--mid);
+  color:#fff;
+}
+
+.panel {
+  display:none;
+}
+
+.panel.active {
+  display:block;
+}
+
+.card-form {
+  background:rgba(23,87,194,.08);
+  border:1px solid rgba(58,143,255,.2);
+  padding:24px;
+  margin-bottom:30px;
+}
+
+.card-form h3 {
+  font-family:'Cinzel',serif;
+  font-size:.9rem;
+  margin-bottom:16px;
+  color:var(--gold);
+}
+
+.list-item {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  background:rgba(23,87,194,.06);
+  border:1px solid rgba(58,143,255,.12);
+  padding:14px 18px;
+  margin-bottom:10px;
+}
+
+.list-item .info {
+  flex:1;
+}
+
+.list-item .info h4 {
+  font-family:'Cinzel',serif;
+  font-size:.85rem;
+}
+
+.list-item .info p {
+  font-size:.78rem;
+  color:var(--light);
+  margin-top:3px;
+}
+
+.list-item .actions button {
+  background:transparent;
+  border:1px solid rgba(168,202,255,.3);
+  color:var(--light);
+  padding:6px 12px;
+  cursor:pointer;
+  font-size:.75rem;
+}
+
+.list-item .actions button.danger {
+  border-color:rgba(255,90,90,.5);
+  color:#ff8080;
+}
+
+.error-msg {
+  color:#ff8080;
+  font-size:.82rem;
+  margin-bottom:10px;
+  min-height:18px;
+}
+
+.success-msg {
+  color:#7CFF9B;
+  font-size:.82rem;
+  margin-bottom:10px;
+  min-height:18px;
+}
+
+.past-note {
+  font-size:.75rem;
+  color:rgba(168,202,255,.5);
+  margin-bottom:16px;
+}
+
+.status {
+  font-size:.75rem;
+  color:var(--light);
+  margin-top:12px;
+}
+
+@media(max-width:600px) {
+  .list-item {
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .list-item .actions {
+    width:100%;
+  }
+
+  .list-item .actions button {
+    width:100%;
+  }
+
+  .tabs {
+    width:100%;
+  }
+
+  .tabs button {
+    flex:1;
+    padding:10px 8px;
+  }
+}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -42,200 +266,739 @@
   <button id="logout-btn" style="display:none;">Log out</button>
 </header>
 
+<!-- LOGIN -->
 <div id="login-view">
+
   <h2>Leader Login</h2>
+
   <div class="error-msg" id="login-error"></div>
+
   <label>Email</label>
-  <input type="email" id="login-email" placeholder="you@church.org" />
+  <input
+    type="email"
+    id="login-email"
+    placeholder="you@church.org"
+    autocomplete="email"
+  >
+
   <label>Password</label>
-  <input type="password" id="login-password" placeholder="••••••••" />
-  <button class="primary" id="login-btn">Log In</button>
+  <input
+    type="password"
+    id="login-password"
+    placeholder="••••••••"
+    autocomplete="current-password"
+  >
+
+  <button class="primary" id="login-btn">
+    Log In
+  </button>
+
+  <div class="status" id="login-status"></div>
+
 </div>
 
+
+<!-- DASHBOARD -->
 <main id="dashboard-view" style="display:none;">
+
   <div class="tabs">
-    <button data-tab="events" class="active">Events</button>
-    <button data-tab="sermons">Sermons</button>
+
+    <button data-tab="events" class="active">
+      Events
+    </button>
+
+    <button data-tab="sermons">
+      Sermons
+    </button>
+
   </div>
 
+
+  <!-- EVENTS -->
   <div class="panel active" id="events-panel">
+
     <div class="card-form">
+
       <h3>Add New Event</h3>
-      <label>Title</label><input id="ev-title" />
-      <label>Date</label><input type="date" id="ev-date" />
-      <label>Time</label><input type="text" id="ev-time" placeholder="e.g. 9:00 AM – 11:00 AM" />
-      <label>Location</label><input id="ev-location" />
-      <label>Description</label><textarea id="ev-desc"></textarea>
+
+      <label>Title</label>
+      <input id="ev-title">
+
+      <label>Date</label>
+      <input type="date" id="ev-date">
+
+      <label>Time</label>
+      <input
+        type="text"
+        id="ev-time"
+        placeholder="e.g. 9:00 AM – 11:00 AM"
+      >
+
+      <label>Location</label>
+      <input id="ev-location">
+
+      <label>Description</label>
+      <textarea id="ev-desc"></textarea>
+
       <div class="error-msg" id="ev-error"></div>
-      <button class="primary" id="ev-submit">Add Event</button>
+
+      <button class="primary" id="ev-submit">
+        Add Event
+      </button>
+
     </div>
-    <p class="past-note">Events automatically stop showing on the public site once their date has passed. You don't need to delete them — but you can below if you'd like to clean up.</p>
+
+    <p class="past-note">
+      Events automatically stop showing on the public site once their date has passed.
+    </p>
+
     <div id="events-admin-list"></div>
+
   </div>
 
+
+  <!-- SERMONS -->
   <div class="panel" id="sermons-panel">
+
     <div class="card-form">
+
       <h3>Add New Sermon</h3>
-      <label>Title</label><input id="sm-title" />
-      <label>Date</label><input type="date" id="sm-date" />
-      <label>Preacher</label><input id="sm-preacher" />
-      <label>Scripture Reference</label><input id="sm-scripture" placeholder="e.g. John 3:16" />
-      <label>Description</label><textarea id="sm-desc"></textarea>
-      <label>Link (YouTube, audio, etc.)</label><input id="sm-link" placeholder="https://..." />
+
+      <label>Title</label>
+      <input id="sm-title">
+
+      <label>Date</label>
+      <input type="date" id="sm-date">
+
+      <label>Preacher</label>
+      <input id="sm-preacher">
+
+      <label>Scripture Reference</label>
+      <input
+        id="sm-scripture"
+        placeholder="e.g. John 3:16"
+      >
+
+      <label>Description</label>
+      <textarea id="sm-desc"></textarea>
+
+      <label>Link (YouTube, audio, etc.)</label>
+      <input
+        id="sm-link"
+        placeholder="https://..."
+      >
+
       <div class="error-msg" id="sm-error"></div>
-      <button class="primary" id="sm-submit">Add Sermon</button>
+
+      <button class="primary" id="sm-submit">
+        Add Sermon
+      </button>
+
     </div>
+
     <div id="sermons-admin-list"></div>
+
   </div>
+
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  // ⚠️ Fill these in with your own Supabase project values (see SETUP.md)
-  const SUPABASE_URL = "https://jchjximznotugwkxxnrbd.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_Ygw25vecy8-zIimzClK6AA_6dqSD3Kp";
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  const loginView = document.getElementById('login-view');
-  const dashboardView = document.getElementById('dashboard-view');
-  const logoutBtn = document.getElementById('logout-btn');
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+"https://jchjximznotugwkxxnrbd.supabase.co";
+
+const SUPABASE_ANON_KEY =
+"sb_publishable_Ygw25vecy8-zIimzClK6AA_6dqSD3Kp";
+
+
+const loginView =
+document.getElementById("login-view");
+
+const dashboardView =
+document.getElementById("dashboard-view");
+
+const logoutBtn =
+document.getElementById("logout-btn");
+
+const loginBtn =
+document.getElementById("login-btn");
+
+const loginError =
+document.getElementById("login-error");
+
+const loginStatus =
+document.getElementById("login-status");
+
+
+/* CHECK SUPABASE */
+
+if (!window.supabase) {
+
+  loginError.textContent =
+  "Supabase could not load. Please refresh the page.";
+
+  loginBtn.disabled = true;
+
+} else {
+
+  const supabase =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+
+  /* SESSION */
 
   async function checkSession() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session) {
-      loginView.style.display = 'none';
-      dashboardView.style.display = 'block';
-      logoutBtn.style.display = 'inline-block';
-      loadEventsAdmin();
-      loadSermonsAdmin();
-    } else {
-      loginView.style.display = 'block';
-      dashboardView.style.display = 'none';
-      logoutBtn.style.display = 'none';
+
+    try {
+
+      const {
+        data: { session },
+        error
+      } = await supabase.auth.getSession();
+
+      if (error) {
+        throw error;
+      }
+
+      if (session) {
+
+        loginView.style.display = "none";
+
+        dashboardView.style.display = "block";
+
+        logoutBtn.style.display = "inline-block";
+
+        loadEventsAdmin();
+
+        loadSermonsAdmin();
+
+      } else {
+
+        loginView.style.display = "block";
+
+        dashboardView.style.display = "none";
+
+        logoutBtn.style.display = "none";
+
+      }
+
+    } catch (error) {
+
+      loginError.textContent =
+      "Connection error: " + error.message;
+
     }
+
   }
 
-  document.getElementById('login-btn').addEventListener('click', async () => {
-    const email = document.getElementById('login-email').value.trim();
-    const password = document.getElementById('login-password').value;
-    const errEl = document.getElementById('login-error');
-    errEl.textContent = '';
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) { errEl.textContent = error.message; return; }
-    checkSession();
+
+  /* LOGIN */
+
+  loginBtn.addEventListener("click", async function() {
+
+    loginError.textContent = "";
+    loginStatus.textContent = "";
+
+    const email =
+    document.getElementById("login-email")
+    .value.trim();
+
+    const password =
+    document.getElementById("login-password")
+    .value;
+
+    if (!email || !password) {
+
+      loginError.textContent =
+      "Please enter your email and password.";
+
+      return;
+
+    }
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = "Signing in...";
+    loginStatus.textContent = "Connecting to Supabase...";
+
+    try {
+
+      const { data, error } =
+      await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (!data.session) {
+        throw new Error("Login succeeded but no session was created.");
+      }
+
+      loginStatus.textContent =
+      "Login successful.";
+
+      await checkSession();
+
+    } catch (error) {
+
+      loginError.textContent =
+      error.message || "Login failed.";
+
+      loginStatus.textContent = "";
+
+    } finally {
+
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Log In";
+
+    }
+
   });
 
-  logoutBtn.addEventListener('click', async () => {
+
+  /* LOGOUT */
+
+  logoutBtn.addEventListener("click", async function() {
+
     await supabase.auth.signOut();
+
     checkSession();
+
   });
 
-  // Tabs
-  document.querySelectorAll('.tabs button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById(btn.dataset.tab + '-panel').classList.add('active');
+
+  /* TABS */
+
+  document
+  .querySelectorAll(".tabs button")
+  .forEach(function(btn) {
+
+    btn.addEventListener("click", function() {
+
+      document
+      .querySelectorAll(".tabs button")
+      .forEach(function(b) {
+        b.classList.remove("active");
+      });
+
+      document
+      .querySelectorAll(".panel")
+      .forEach(function(p) {
+        p.classList.remove("active");
+      });
+
+      btn.classList.add("active");
+
+      document
+      .getElementById(
+        btn.dataset.tab + "-panel"
+      )
+      .classList.add("active");
+
     });
+
   });
+
+
+  /* ESCAPE HTML */
 
   function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str ?? '';
+
+    const div =
+    document.createElement("div");
+
+    div.textContent =
+    str ?? "";
+
     return div.innerHTML;
+
   }
 
-  // EVENTS
-  document.getElementById('ev-submit').addEventListener('click', async () => {
-    const errEl = document.getElementById('ev-error');
-    errEl.textContent = '';
-    const title = document.getElementById('ev-title').value.trim();
-    const event_date = document.getElementById('ev-date').value;
-    const event_time = document.getElementById('ev-time').value.trim();
-    const location = document.getElementById('ev-location').value.trim();
-    const description = document.getElementById('ev-desc').value.trim();
-    if (!title || !event_date) { errEl.textContent = 'Title and date are required.'; return; }
-    const { error } = await supabase.from('events').insert([{ title, event_date, event_time, location, description }]);
-    if (error) { errEl.textContent = error.message; return; }
-    document.getElementById('ev-title').value = '';
-    document.getElementById('ev-date').value = '';
-    document.getElementById('ev-time').value = '';
-    document.getElementById('ev-location').value = '';
-    document.getElementById('ev-desc').value = '';
+
+  /* EVENTS */
+
+  document
+  .getElementById("ev-submit")
+  .addEventListener("click", async function() {
+
+    const errEl =
+    document.getElementById("ev-error");
+
+    errEl.textContent = "";
+
+    const title =
+    document.getElementById("ev-title")
+    .value.trim();
+
+    const event_date =
+    document.getElementById("ev-date")
+    .value;
+
+    const event_time =
+    document.getElementById("ev-time")
+    .value.trim();
+
+    const location =
+    document.getElementById("ev-location")
+    .value.trim();
+
+    const description =
+    document.getElementById("ev-desc")
+    .value.trim();
+
+    if (!title || !event_date) {
+
+      errEl.textContent =
+      "Title and date are required.";
+
+      return;
+
+    }
+
+    const { error } =
+    await supabase
+    .from("events")
+    .insert([{
+      title,
+      event_date,
+      event_time,
+      location,
+      description
+    }]);
+
+    if (error) {
+
+      errEl.textContent =
+      error.message;
+
+      return;
+
+    }
+
+    document.getElementById("ev-title").value = "";
+    document.getElementById("ev-date").value = "";
+    document.getElementById("ev-time").value = "";
+    document.getElementById("ev-location").value = "";
+    document.getElementById("ev-desc").value = "";
+
     loadEventsAdmin();
+
   });
+
 
   async function loadEventsAdmin() {
-    const list = document.getElementById('events-admin-list');
-    const { data, error } = await supabase.from('events').select('*').order('event_date', { ascending: true });
-    if (error) { list.innerHTML = `<p class="error-msg">${escapeHtml(error.message)}</p>`; return; }
-    const today = new Date().toISOString().split('T')[0];
-    list.innerHTML = (data || []).map(ev => `
+
+    const list =
+    document.getElementById(
+      "events-admin-list"
+    );
+
+    const {
+      data,
+      error
+    } =
+    await supabase
+    .from("events")
+    .select("*")
+    .order(
+      "event_date",
+      { ascending:true }
+    );
+
+    if (error) {
+
+      list.innerHTML =
+      `<p class="error-msg">${escapeHtml(error.message)}</p>`;
+
+      return;
+
+    }
+
+    const today =
+    new Date()
+    .toISOString()
+    .split("T")[0];
+
+    list.innerHTML =
+    (data || [])
+    .map(function(ev) {
+
+      return `
       <div class="list-item">
+
         <div class="info">
-          <h4>${escapeHtml(ev.title)} ${ev.event_date < today ? '<span style="color:rgba(168,202,255,0.4);font-size:0.7rem;">(past — hidden from site)</span>' : ''}</h4>
-          <p>${ev.event_date}${ev.event_time ? ' · ' + escapeHtml(ev.event_time) : ''}${ev.location ? ' · ' + escapeHtml(ev.location) : ''}</p>
+
+          <h4>
+            ${escapeHtml(ev.title)}
+
+            ${
+              ev.event_date < today
+              ? '<span style="color:rgba(168,202,255,.4);font-size:.7rem;">(past)</span>'
+              : ''
+            }
+
+          </h4>
+
+          <p>
+            ${ev.event_date}
+
+            ${
+              ev.event_time
+              ? " · " + escapeHtml(ev.event_time)
+              : ""
+            }
+
+            ${
+              ev.location
+              ? " · " + escapeHtml(ev.location)
+              : ""
+            }
+
+          </p>
+
         </div>
+
         <div class="actions">
-          <button class="danger" onclick="deleteEvent('${ev.id}')">Delete</button>
+
+          <button
+            class="danger"
+            onclick="deleteEvent('${ev.id}')"
+          >
+            Delete
+          </button>
+
         </div>
+
       </div>
-    `).join('') || '<p class="past-note">No events yet.</p>';
+      `;
+
+    })
+    .join("")
+    ||
+    '<p class="past-note">No events yet.</p>';
+
   }
 
-  window.deleteEvent = async (id) => {
-    if (!confirm('Delete this event?')) return;
-    await supabase.from('events').delete().eq('id', id);
+
+  window.deleteEvent =
+  async function(id) {
+
+    if (!confirm("Delete this event?"))
+      return;
+
+    const { error } =
+    await supabase
+    .from("events")
+    .delete()
+    .eq("id", id);
+
+    if (error) {
+
+      alert(error.message);
+
+      return;
+
+    }
+
     loadEventsAdmin();
+
   };
 
-  // SERMONS
-  document.getElementById('sm-submit').addEventListener('click', async () => {
-    const errEl = document.getElementById('sm-error');
-    errEl.textContent = '';
-    const title = document.getElementById('sm-title').value.trim();
-    const sermon_date = document.getElementById('sm-date').value;
-    const preacher = document.getElementById('sm-preacher').value.trim();
-    const scripture_reference = document.getElementById('sm-scripture').value.trim();
-    const description = document.getElementById('sm-desc').value.trim();
-    const link = document.getElementById('sm-link').value.trim();
-    if (!title || !sermon_date) { errEl.textContent = 'Title and date are required.'; return; }
-    const { error } = await supabase.from('sermons').insert([{ title, sermon_date, preacher, scripture_reference, description, link }]);
-    if (error) { errEl.textContent = error.message; return; }
-    document.getElementById('sm-title').value = '';
-    document.getElementById('sm-date').value = '';
-    document.getElementById('sm-preacher').value = '';
-    document.getElementById('sm-scripture').value = '';
-    document.getElementById('sm-desc').value = '';
-    document.getElementById('sm-link').value = '';
+
+  /* SERMONS */
+
+  document
+  .getElementById("sm-submit")
+  .addEventListener("click", async function() {
+
+    const errEl =
+    document.getElementById("sm-error");
+
+    errEl.textContent = "";
+
+    const title =
+    document.getElementById("sm-title")
+    .value.trim();
+
+    const sermon_date =
+    document.getElementById("sm-date")
+    .value;
+
+    const preacher =
+    document.getElementById("sm-preacher")
+    .value.trim();
+
+    const scripture_reference =
+    document.getElementById("sm-scripture")
+    .value.trim();
+
+    const description =
+    document.getElementById("sm-desc")
+    .value.trim();
+
+    const link =
+    document.getElementById("sm-link")
+    .value.trim();
+
+    if (!title || !sermon_date) {
+
+      errEl.textContent =
+      "Title and date are required.";
+
+      return;
+
+    }
+
+    const { error } =
+    await supabase
+    .from("sermons")
+    .insert([{
+      title,
+      sermon_date,
+      preacher,
+      scripture_reference,
+      description,
+      link
+    }]);
+
+    if (error) {
+
+      errEl.textContent =
+      error.message;
+
+      return;
+
+    }
+
+    document.getElementById("sm-title").value = "";
+    document.getElementById("sm-date").value = "";
+    document.getElementById("sm-preacher").value = "";
+    document.getElementById("sm-scripture").value = "";
+    document.getElementById("sm-desc").value = "";
+    document.getElementById("sm-link").value = "";
+
     loadSermonsAdmin();
+
   });
 
+
   async function loadSermonsAdmin() {
-    const list = document.getElementById('sermons-admin-list');
-    const { data, error } = await supabase.from('sermons').select('*').order('sermon_date', { ascending: false });
-    if (error) { list.innerHTML = `<p class="error-msg">${escapeHtml(error.message)}</p>`; return; }
-    list.innerHTML = (data || []).map(s => `
+
+    const list =
+    document.getElementById(
+      "sermons-admin-list"
+    );
+
+    const {
+      data,
+      error
+    } =
+    await supabase
+    .from("sermons")
+    .select("*")
+    .order(
+      "sermon_date",
+      { ascending:false }
+    );
+
+    if (error) {
+
+      list.innerHTML =
+      `<p class="error-msg">${escapeHtml(error.message)}</p>`;
+
+      return;
+
+    }
+
+    list.innerHTML =
+    (data || [])
+    .map(function(s) {
+
+      return `
       <div class="list-item">
+
         <div class="info">
-          <h4>${escapeHtml(s.title)}</h4>
-          <p>${s.sermon_date}${s.preacher ? ' · ' + escapeHtml(s.preacher) : ''}</p>
+
+          <h4>
+            ${escapeHtml(s.title)}
+          </h4>
+
+          <p>
+            ${s.sermon_date}
+
+            ${
+              s.preacher
+              ? " · " + escapeHtml(s.preacher)
+              : ""
+            }
+
+          </p>
+
         </div>
+
         <div class="actions">
-          <button class="danger" onclick="deleteSermon('${s.id}')">Delete</button>
+
+          <button
+            class="danger"
+            onclick="deleteSermon('${s.id}')"
+          >
+            Delete
+          </button>
+
         </div>
+
       </div>
-    `).join('') || '<p class="past-note">No sermons yet.</p>';
+      `;
+
+    })
+    .join("")
+    ||
+    '<p class="past-note">No sermons yet.</p>';
+
   }
 
-  window.deleteSermon = async (id) => {
-    if (!confirm('Delete this sermon?')) return;
-    await supabase.from('sermons').delete().eq('id', id);
+
+  window.deleteSermon =
+  async function(id) {
+
+    if (!confirm("Delete this sermon?"))
+      return;
+
+    const { error } =
+    await supabase
+    .from("sermons")
+    .delete()
+    .eq("id", id);
+
+    if (error) {
+
+      alert(error.message);
+
+      return;
+
+    }
+
     loadSermonsAdmin();
+
   };
 
+
+  /* START */
+
   checkSession();
+
+}
+
 </script>
+
 </body>
 </html>
