@@ -549,11 +549,18 @@ const SUPABASE_ANON_KEY = "sb_publishable_Ygw25vecy8-zIimzClK6AA_6dqSD3Kp";
     loadSermons();
   </script>
 
-  <!-- PWA install prompt (iOS + Android) -->
+  <!-- PWA INSTALL SCRIPT - COMPLETE -->
   <script>
+    // Register Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(err => console.error('SW registration failed:', err));
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => {
+            console.log('✅ Service worker registered!');
+          })
+          .catch(err => {
+            console.error('❌ Service worker registration failed:', err);
+          });
       });
     }
 
@@ -564,62 +571,81 @@ const SUPABASE_ANON_KEY = "sb_publishable_Ygw25vecy8-zIimzClK6AA_6dqSD3Kp";
     function isStandalone() {
       return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
     }
+
     function wasDismissed() {
       return localStorage.getItem(DISMISS_KEY) === '1';
     }
-    function dismiss() {
+
+    function dismissBanner() {
       localStorage.setItem(DISMISS_KEY, '1');
       installBanner.classList.remove('show');
     }
 
     const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
-
     let deferredPrompt = null;
 
-    // Android / desktop Chrome fires this when installable
+    // Android/Chrome install prompt
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      if (!isStandalone()) {
+      if (!isStandalone() && !wasDismissed()) {
         installBanner.classList.add('show');
+        console.log('📱 Install banner shown');
       }
     });
 
+    // Install button click
     document.getElementById('ib-install-btn').addEventListener('click', async () => {
       if (isIOS) {
         installBanner.classList.remove('show');
         iosSheet.classList.add('show');
         return;
       }
+      
       if (deferredPrompt) {
         deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
+        const result = await deferredPrompt.userChoice;
+        console.log('User choice:', result.outcome);
         deferredPrompt = null;
         installBanner.classList.remove('show');
+        
+        if (result.outcome === 'accepted') {
+          localStorage.setItem(DISMISS_KEY, '1');
+          console.log('🎉 App installed successfully!');
+        }
       } else {
-        alert('To install Pure-Grace, open your browser menu and choose Add to Home screen or Install app.');
+        alert('To install this app:\n1. Tap the menu (⋮) in your browser\n2. Select "Install App" or "Add to Home Screen"');
       }
     });
 
-    document.getElementById('ib-close-btn').addEventListener('click', dismiss);
+    document.getElementById('ib-close-btn').addEventListener('click', dismissBanner);
     document.getElementById('ios-close-btn').addEventListener('click', () => {
       iosSheet.classList.remove('show');
-      dismiss();
+      dismissBanner();
     });
 
+    // App installed successfully
     window.addEventListener('appinstalled', () => {
       installBanner.classList.remove('show');
       localStorage.setItem(DISMISS_KEY, '1');
+      console.log('🎉 App installed successfully!');
     });
 
-    // Show the installation banner automatically on supported phones and browsers.
-    // Android may not fire beforeinstallprompt until later, so use a fallback.
-    if (!isStandalone()) {
-      installBanner.classList.add('show');
+    // Show iOS banner if needed
+    if (isIOS && !isStandalone() && !wasDismissed()) {
+      setTimeout(() => {
+        installBanner.classList.add('show');
+        console.log('📱 iOS install banner shown');
+      }, 1000);
     }
-    setTimeout(() => {
-      if (!isStandalone()) installBanner.classList.add('show');
-    }, 1200);
+
+    // Check if already standalone
+    if (isStandalone()) {
+      installBanner.classList.remove('show');
+      console.log('📱 App is running in standalone mode');
+    }
   </script>
+</body>
+</html>
 </body>
 </html>
