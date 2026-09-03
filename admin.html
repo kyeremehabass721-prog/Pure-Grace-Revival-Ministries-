@@ -33,7 +33,7 @@ body {
 
 header {
   padding:20px 5%;
-  border-bottom:1px solid rgba(58,143,255,0.2);
+  border-bottom:1px solid rgba(58,143,255,.2);
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -46,7 +46,7 @@ header h1 {
 
 header button {
   background:transparent;
-  border:1px solid rgba(168,202,255,0.4);
+  border:1px solid rgba(168,202,255,.4);
   color:var(--light);
   padding:8px 16px;
   cursor:pointer;
@@ -71,11 +71,10 @@ main {
 }
 
 input,
-textarea,
-select {
+textarea {
   width:100%;
-  background:rgba(23,87,194,0.08);
-  border:1px solid rgba(58,143,255,0.25);
+  background:rgba(23,87,194,.08);
+  border:1px solid rgba(58,143,255,.25);
   color:var(--white);
   padding:12px 14px;
   font-size:.9rem;
@@ -104,6 +103,10 @@ label {
   text-align:left;
 }
 
+button {
+  cursor:pointer;
+}
+
 button.primary {
   background:linear-gradient(135deg,var(--mid),var(--sky));
   color:#fff;
@@ -113,7 +116,6 @@ button.primary {
   font-size:.75rem;
   letter-spacing:.1em;
   text-transform:uppercase;
-  cursor:pointer;
   width:100%;
 }
 
@@ -133,7 +135,6 @@ button.primary:disabled {
   border:1px solid rgba(58,143,255,.2);
   color:var(--light);
   padding:10px 20px;
-  cursor:pointer;
   font-family:'Cinzel',serif;
   font-size:.72rem;
   letter-spacing:.08em;
@@ -198,7 +199,6 @@ button.primary:disabled {
   border:1px solid rgba(168,202,255,.3);
   color:var(--light);
   padding:6px 12px;
-  cursor:pointer;
   font-size:.75rem;
 }
 
@@ -231,6 +231,14 @@ button.primary:disabled {
   font-size:.75rem;
   color:var(--light);
   margin-top:12px;
+}
+
+.connection-status {
+  padding:10px;
+  margin-bottom:20px;
+  border:1px solid rgba(58,143,255,.2);
+  font-size:.8rem;
+  color:var(--light);
 }
 
 @media(max-width:600px) {
@@ -301,6 +309,10 @@ button.primary:disabled {
 <!-- DASHBOARD -->
 <main id="dashboard-view" style="display:none;">
 
+  <div class="connection-status" id="connection-status">
+    Checking connection...
+  </div>
+
   <div class="tabs">
 
     <button data-tab="events" class="active">
@@ -341,6 +353,7 @@ button.primary:disabled {
       <textarea id="ev-desc"></textarea>
 
       <div class="error-msg" id="ev-error"></div>
+      <div class="success-msg" id="ev-success"></div>
 
       <button class="primary" id="ev-submit">
         Add Event
@@ -389,6 +402,7 @@ button.primary:disabled {
       >
 
       <div class="error-msg" id="sm-error"></div>
+      <div class="success-msg" id="sm-success"></div>
 
       <button class="primary" id="sm-submit">
         Add Sermon
@@ -433,8 +447,9 @@ document.getElementById("login-error");
 const loginStatus =
 document.getElementById("login-status");
 
+const connectionStatus =
+document.getElementById("connection-status");
 
-/* CHECK SUPABASE */
 
 if (!window.supabase) {
 
@@ -452,7 +467,14 @@ if (!window.supabase) {
   );
 
 
-  /* SESSION */
+  /* SHOW ERROR */
+
+  function showError(elementId, message) {
+    document.getElementById(elementId).textContent = message;
+  }
+
+
+  /* CHECK SESSION */
 
   async function checkSession() {
 
@@ -475,9 +497,11 @@ if (!window.supabase) {
 
         logoutBtn.style.display = "inline-block";
 
-        loadEventsAdmin();
+        connectionStatus.textContent =
+        "Connected. You are logged in.";
 
-        loadSermonsAdmin();
+        await loadEventsAdmin();
+        await loadSermonsAdmin();
 
       } else {
 
@@ -633,7 +657,26 @@ if (!window.supabase) {
     const errEl =
     document.getElementById("ev-error");
 
+    const successEl =
+    document.getElementById("ev-success");
+
     errEl.textContent = "";
+    successEl.textContent = "";
+
+    const {
+      data: { session },
+      error: sessionError
+    } =
+    await supabase.auth.getSession();
+
+    if (sessionError || !session) {
+
+      errEl.textContent =
+      "Your login session has expired. Please log in again.";
+
+      return;
+
+    }
 
     const title =
     document.getElementById("ev-title")
@@ -689,6 +732,9 @@ if (!window.supabase) {
     document.getElementById("ev-time").value = "";
     document.getElementById("ev-location").value = "";
     document.getElementById("ev-desc").value = "";
+
+    successEl.textContent =
+    "Event added successfully.";
 
     loadEventsAdmin();
 
@@ -749,7 +795,7 @@ if (!window.supabase) {
           </h4>
 
           <p>
-            ${ev.event_date}
+            ${escapeHtml(ev.event_date)}
 
             ${
               ev.event_time
@@ -823,7 +869,26 @@ if (!window.supabase) {
     const errEl =
     document.getElementById("sm-error");
 
+    const successEl =
+    document.getElementById("sm-success");
+
     errEl.textContent = "";
+    successEl.textContent = "";
+
+    const {
+      data: { session },
+      error: sessionError
+    } =
+    await supabase.auth.getSession();
+
+    if (sessionError || !session) {
+
+      errEl.textContent =
+      "Your login session has expired. Please log in again.";
+
+      return;
+
+    }
 
     const title =
     document.getElementById("sm-title")
@@ -886,6 +951,9 @@ if (!window.supabase) {
     document.getElementById("sm-desc").value = "";
     document.getElementById("sm-link").value = "";
 
+    successEl.textContent =
+    "Sermon added successfully.";
+
     loadSermonsAdmin();
 
   });
@@ -933,7 +1001,7 @@ if (!window.supabase) {
           </h4>
 
           <p>
-            ${s.sermon_date}
+            ${escapeHtml(s.sermon_date)}
 
             ${
               s.preacher
