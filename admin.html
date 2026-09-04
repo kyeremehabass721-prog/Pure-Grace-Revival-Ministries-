@@ -305,7 +305,6 @@ button.primary:disabled {
 
 </div>
 
-
 <!-- DASHBOARD -->
 <main id="dashboard-view" style="display:none;">
 
@@ -324,7 +323,6 @@ button.primary:disabled {
     </button>
 
   </div>
-
 
   <!-- EVENTS -->
   <div class="panel active" id="events-panel">
@@ -368,7 +366,6 @@ button.primary:disabled {
     <div id="events-admin-list"></div>
 
   </div>
-
 
   <!-- SERMONS -->
   <div class="panel" id="sermons-panel">
@@ -416,7 +413,6 @@ button.primary:disabled {
 
 </main>
 
-
 <!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -427,7 +423,6 @@ const SUPABASE_URL =
 
 const SUPABASE_ANON_KEY =
 "sb_publishable_Ygw25vecy8-zIimzClK6AA_6dqSD3Kp";
-
 
 const loginView =
 document.getElementById("login-view");
@@ -488,16 +483,6 @@ if (!window.supabase) {
     return phone
       .replace(/\s+/g, "")
       .trim();
-
-  }
-
-
-  /* SHOW ERROR */
-
-  function showError(elementId, message) {
-
-    document.getElementById(elementId).textContent =
-    message;
 
   }
 
@@ -584,13 +569,13 @@ if (!window.supabase) {
 
     loginBtn.textContent = "Signing in...";
 
-    loginStatus.textContent =
-    "Login successful.";
-
     sessionStorage.setItem(
       "pastor_admin_logged_in",
       "true"
     );
+
+    loginStatus.textContent =
+    "Login successful.";
 
     loginView.style.display = "none";
 
@@ -704,21 +689,6 @@ if (!window.supabase) {
     errEl.textContent = "";
 
     successEl.textContent = "";
-
-    const {
-      data: { session },
-      error: sessionError
-    } =
-    await supabase.auth.getSession();
-
-    if (sessionError || !session) {
-
-      errEl.textContent =
-      "Your login session has expired. Please log in again.";
-
-      return;
-
-    }
 
     const title =
     document.getElementById("ev-title")
@@ -922,21 +892,6 @@ if (!window.supabase) {
 
     successEl.textContent = "";
 
-    const {
-      data: { session },
-      error: sessionError
-    } =
-    await supabase.auth.getSession();
-
-    if (sessionError || !session) {
-
-      errEl.textContent =
-      "Your login session has expired. Please log in again.";
-
-      return;
-
-    }
-
     const title =
     document.getElementById("sm-title")
     .value.trim();
@@ -1121,4 +1076,4 @@ if (!window.supabase) {
 </script>
 
 </body>
-        </html>
+</html>
