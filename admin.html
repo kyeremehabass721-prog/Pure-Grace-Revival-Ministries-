@@ -281,19 +281,19 @@ button.primary:disabled {
 
   <div class="error-msg" id="login-error"></div>
 
-  <label>Email</label>
+  <label>Phone Number</label>
   <input
-    type="email"
-    id="login-email"
-    placeholder="you@church.org"
-    autocomplete="email"
+    type="tel"
+    id="login-phone"
+    placeholder="+233 536782743"
+    autocomplete="tel"
   >
 
-  <label>Password</label>
+  <label>Access Code</label>
   <input
     type="password"
     id="login-password"
-    placeholder="••••••••"
+    placeholder="Enter your access code"
     autocomplete="current-password"
   >
 
@@ -467,56 +467,71 @@ if (!window.supabase) {
   );
 
 
-  /* SHOW ERROR */
+  /* SIMPLE ADMIN ACCOUNTS */
 
-  function showError(elementId, message) {
-    document.getElementById(elementId).textContent = message;
+  const ADMIN_ACCOUNTS = [
+    {
+      phone: "+233242351980",
+      code: "Papayaw40"
+    },
+    {
+      phone: "+233536782743",
+      code: "Kelymas006"
+    }
+  ];
+
+
+  /* PHONE NORMALIZATION */
+
+  function normalizePhone(phone) {
+
+    return phone
+      .replace(/\s+/g, "")
+      .trim();
+
   }
 
 
-  /* CHECK SESSION */
+  /* SHOW ERROR */
+
+  function showError(elementId, message) {
+
+    document.getElementById(elementId).textContent =
+    message;
+
+  }
+
+
+  /* CHECK LOGIN SESSION */
 
   async function checkSession() {
 
-    try {
+    const loggedIn =
+    sessionStorage.getItem("pastor_admin_logged_in")
+    === "true";
 
-      const {
-        data: { session },
-        error
-      } = await supabase.auth.getSession();
+    if (loggedIn) {
 
-      if (error) {
-        throw error;
-      }
+      loginView.style.display = "none";
 
-      if (session) {
+      dashboardView.style.display = "block";
 
-        loginView.style.display = "none";
+      logoutBtn.style.display = "inline-block";
 
-        dashboardView.style.display = "block";
+      connectionStatus.textContent =
+      "Connected. You are logged in.";
 
-        logoutBtn.style.display = "inline-block";
+      await loadEventsAdmin();
 
-        connectionStatus.textContent =
-        "Connected. You are logged in.";
+      await loadSermonsAdmin();
 
-        await loadEventsAdmin();
-        await loadSermonsAdmin();
+    } else {
 
-      } else {
+      loginView.style.display = "block";
 
-        loginView.style.display = "block";
+      dashboardView.style.display = "none";
 
-        dashboardView.style.display = "none";
-
-        logoutBtn.style.display = "none";
-
-      }
-
-    } catch (error) {
-
-      loginError.textContent =
-      "Connection error: " + error.message;
+      logoutBtn.style.display = "none";
 
     }
 
@@ -528,74 +543,96 @@ if (!window.supabase) {
   loginBtn.addEventListener("click", async function() {
 
     loginError.textContent = "";
+
     loginStatus.textContent = "";
 
-    const email =
-    document.getElementById("login-email")
-    .value.trim();
+    const phone =
+    normalizePhone(
+      document.getElementById("login-phone").value
+    );
 
     const password =
-    document.getElementById("login-password")
-    .value;
+    document.getElementById("login-password").value;
 
-    if (!email || !password) {
+    if (!phone || !password) {
 
       loginError.textContent =
-      "Please enter your email and password.";
+      "Please enter your phone number and access code.";
+
+      return;
+
+    }
+
+    const account =
+    ADMIN_ACCOUNTS.find(function(admin) {
+
+      return admin.phone === phone &&
+             admin.code === password;
+
+    });
+
+    if (!account) {
+
+      loginError.textContent =
+      "Incorrect phone number or access code.";
 
       return;
 
     }
 
     loginBtn.disabled = true;
+
     loginBtn.textContent = "Signing in...";
-    loginStatus.textContent = "Connecting to Supabase...";
 
-    try {
+    loginStatus.textContent =
+    "Login successful.";
 
-      const { data, error } =
-      await supabase.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
+    sessionStorage.setItem(
+      "pastor_admin_logged_in",
+      "true"
+    );
 
-      if (error) {
-        throw error;
-      }
+    loginView.style.display = "none";
 
-      if (!data.session) {
-        throw new Error("Login succeeded but no session was created.");
-      }
+    dashboardView.style.display = "block";
 
-      loginStatus.textContent =
-      "Login successful.";
+    logoutBtn.style.display = "inline-block";
 
-      await checkSession();
+    connectionStatus.textContent =
+    "Connected. You are logged in.";
 
-    } catch (error) {
+    await loadEventsAdmin();
 
-      loginError.textContent =
-      error.message || "Login failed.";
+    await loadSermonsAdmin();
 
-      loginStatus.textContent = "";
+    loginBtn.disabled = false;
 
-    } finally {
-
-      loginBtn.disabled = false;
-      loginBtn.textContent = "Log In";
-
-    }
+    loginBtn.textContent = "Log In";
 
   });
 
 
   /* LOGOUT */
 
-  logoutBtn.addEventListener("click", async function() {
+  logoutBtn.addEventListener("click", function() {
 
-    await supabase.auth.signOut();
+    sessionStorage.removeItem(
+      "pastor_admin_logged_in"
+    );
 
-    checkSession();
+    loginView.style.display = "block";
+
+    dashboardView.style.display = "none";
+
+    logoutBtn.style.display = "none";
+
+    document.getElementById("login-phone").value = "";
+
+    document.getElementById("login-password").value = "";
+
+    loginError.textContent = "";
+
+    loginStatus.textContent = "";
 
   });
 
@@ -611,13 +648,17 @@ if (!window.supabase) {
       document
       .querySelectorAll(".tabs button")
       .forEach(function(b) {
+
         b.classList.remove("active");
+
       });
 
       document
       .querySelectorAll(".panel")
       .forEach(function(p) {
+
         p.classList.remove("active");
+
       });
 
       btn.classList.add("active");
@@ -661,6 +702,7 @@ if (!window.supabase) {
     document.getElementById("ev-success");
 
     errEl.textContent = "";
+
     successEl.textContent = "";
 
     const {
@@ -728,9 +770,13 @@ if (!window.supabase) {
     }
 
     document.getElementById("ev-title").value = "";
+
     document.getElementById("ev-date").value = "";
+
     document.getElementById("ev-time").value = "";
+
     document.getElementById("ev-location").value = "";
+
     document.getElementById("ev-desc").value = "";
 
     successEl.textContent =
@@ -873,6 +919,7 @@ if (!window.supabase) {
     document.getElementById("sm-success");
 
     errEl.textContent = "";
+
     successEl.textContent = "";
 
     const {
@@ -945,10 +992,15 @@ if (!window.supabase) {
     }
 
     document.getElementById("sm-title").value = "";
+
     document.getElementById("sm-date").value = "";
+
     document.getElementById("sm-preacher").value = "";
+
     document.getElementById("sm-scripture").value = "";
+
     document.getElementById("sm-desc").value = "";
+
     document.getElementById("sm-link").value = "";
 
     successEl.textContent =
@@ -1069,4 +1121,4 @@ if (!window.supabase) {
 </script>
 
 </body>
-</html>
+        </html>
