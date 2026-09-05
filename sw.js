@@ -1,4 +1,4 @@
-const CACHE_NAME = "pure-grace-v6";
+const CACHE_NAME = "pure-grace-v7";
 
 const APP_FILES = [
   "./",
